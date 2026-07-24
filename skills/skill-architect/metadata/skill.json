@@ -1,0 +1,40 @@
+{
+  "name": "skill-architect",
+  "version": "1.0.0",
+  "description": "Root engineering skill architect responsible for designing, standardizing, validating, testing, and generating all AI Skills across the organization.",
+  "author": "AI Engineering Lead Architect",
+  "license": "Proprietary / Enterprise Confidential",
+  "tags": [
+    "skill-architect",
+    "root-skill",
+    "ai-engineering",
+    "framework",
+    "sdlc",
+    "quality-gate"
+  ],
+  "directories": [
+    "references",
+    "assets",
+    "scripts",
+    "templates",
+    "tests",
+    "examples",
+    "metadata",
+    "docs"
+  ],
+  "quality_score_target": 85,
+  "dependencies": {
+    "mcp_servers": [],
+    "python_packages": [
+      "json",
+      "pathlib",
+      "unittest",
+      "argparse"
+    ],
+    "scripts": [
+      "scripts/skill_validator.py",
+      "scripts/quality_scorer.py",
+      "scripts/skill_generator.py"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant User as Trader / Product Manager
+    participant Skill as requirement-analysis Skill
+    participant Checker as ambiguity_checker.py
+    participant PRD as PRD Design Skill
+
+    User->>Skill: Submit Vague Business Idea
+    Skill->>Checker: Audit for Ambiguous Terms
+    alt Ambiguous terms detected (e.g. "fast", "scalable")
+        Checker-->>Skill: Return Ambiguity Report
+        Skill-->>User: REJECT requirement & ask clarifying questions
+        User-->>Skill: Provide numerical metrics (< 50us, 100k msg/s)
+    end
+    Skill->>Skill: Generate BDD Acceptance Criteria (Gherkin)
+    Skill->>Skill: Map Traceability Matrix (BG -> FR -> NFR -> BDD)
+    Skill-->>User: Present Implementation-Ready SRS Document
+    Skill-->>PRD: Direct Handoff Input to PRD Design Skill

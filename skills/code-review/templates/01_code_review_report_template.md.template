@@ -1,0 +1,84 @@
+# Principal Code Review Audit Report
+
+- **Target Repository**: `{{REPOSITORY_NAME}}`
+- **Pull Request**: `{{PR_TITLE}}` (#{{PR_NUMBER}})
+- **Reviewer Persona**: Principal Software Engineer
+- **Production Readiness Score**: `{{READINESS_SCORE}}/100` (Threshold: >= 85)
+- **Risk Score**: `{{RISK_SCORE}}/100` (Lower is better)
+- **Final Merge Recommendation**: **`{{MERGE_RECOMMENDATION}}`** (APPROVED | CHANGES_REQUESTED | REJECTED)
+
+---
+
+## 1. Executive Summary
+{{EXECUTIVE_SUMMARY_TEXT}}
+
+---
+
+## 2. Severity Breakdown
+
+| Severity | Count | Summary |
+| :--- | :---: | :--- |
+| **CRITICAL** | {{CRITICAL_COUNT}} | High-risk flaws: Security vulnerabilities, race conditions, data corruption, memory leaks. |
+| **HIGH** | {{HIGH_COUNT}} | Major issues: Architectural violations, missing timeouts, unhandled exceptions. |
+| **MEDIUM** | {{MEDIUM_COUNT}} | Moderate issues: Suboptimal performance, missing test coverage, missing logging context. |
+| **LOW / NIT** | {{LOW_COUNT}} | Code readability suggestions, minor naming improvements. |
+
+---
+
+## 3. Categorized Findings & Audits
+
+### 3.1 Correctness & Resource Management
+- {{CORRECTNESS_FINDINGS}}
+
+### 3.2 Architectural Layering & DDD
+- {{ARCHITECTURE_FINDINGS}}
+
+### 3.3 Security & Secrets Audit
+- {{SECURITY_FINDINGS}}
+
+### 3.4 Concurrency & Memory Safety
+- {{CONCURRENCY_FINDINGS}}
+
+### 3.5 Financial Systems & Precision
+- {{FINANCIAL_FINDINGS}}
+
+### 3.6 Observability & Telemetry
+- {{OBSERVABILITY_FINDINGS}}
+
+### 3.7 Database & Persistence
+- {{DATABASE_FINDINGS}}
+
+### 3.8 Performance & Latency
+- {{PERFORMANCE_FINDINGS}}
+
+### 3.9 Testing & Verification
+- {{TESTING_FINDINGS}}
+
+### 3.10 AI-Generated Code Audit
+- {{AI_CODE_FINDINGS}}
+
+---
+
+## 4. Positive Observations
+- {{POSITIVE_OBSERVATION_1}}
+- {{POSITIVE_OBSERVATION_2}}
+
+---
+
+## 5. Recommended Fixes & Production Code Alternatives
+
+```diff
+- // Incorrect / Flawed implementation
++ // Production-ready refactored implementation
+```
+
+---
+
+## 6. Final Quality Gate Decision
+
+- [ ] Zero Critical Security Vulnerabilities
+- [ ] Zero Race Conditions or Memory Leaks
+- [ ] All Outbound Calls Have Timeouts
+- [ ] Structured JSON Logging Implemented
+- [ ] Unit Test Coverage >= 70%
+- [ ] Production Readiness Score >= 85

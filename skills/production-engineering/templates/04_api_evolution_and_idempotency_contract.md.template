@@ -1,0 +1,18 @@
+# API Evolution & Idempotency Contract Checklist
+
+## 1. Idempotency Specification
+- [ ] Endpoint accepts `Idempotency-Key` header for non-idempotent operations (`POST`, `PATCH`).
+- [ ] Idempotency keys are cached in Redis / DB for 24 hours.
+- [ ] Concurrent requests with the same key receive a `409 Conflict` or wait for original execution.
+- [ ] Cached execution payload is returned on duplicate requests with HTTP `200 OK` or `201 Created`.
+
+## 2. Backward Compatibility Verification
+- [ ] No existing fields have been removed or renamed in request/response payloads.
+- [ ] All new fields added to existing schemas are optional/nullable.
+- [ ] Enum parameters accept existing values without breaking validation logic.
+- [ ] Database migrations do NOT drop columns in the same release as application updates (Expand and Contract pattern).
+
+## 3. Deprecation & Sunset Protocol
+- [ ] Deprecated APIs return `Sunset: <Date>` HTTP header.
+- [ ] Warning logs are emitted when deprecated endpoints are called.
+- [ ] Sunset grace period is at least 180 days prior to hard removal.

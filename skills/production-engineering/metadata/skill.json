@@ -1,0 +1,29 @@
+{
+  "name": "production-engineering",
+  "version": "1.0.0",
+  "description": "Root organizational production-grade software engineering philosophy and architectural standards inherited by all language-specific skills.",
+  "author": "Lead AI Engineering Architect",
+  "tags": [
+    "production-engineering",
+    "root-philosophy",
+    "architecture",
+    "solid",
+    "clean-architecture",
+    "ddd",
+    "12-factor",
+    "resilience",
+    "opentelemetry"
+  ],
+  "dependencies": {
+    "mcp_servers": [],
+    "python_packages": [
+      "pytest",
+      "pyyaml"
+    ],
+    "scripts": [
+      "scripts/production_readiness_checker.py",
+      "scripts/api_compatibility_checker.py"
+    ]
+  },
+  "quality_score_target": 85
+}

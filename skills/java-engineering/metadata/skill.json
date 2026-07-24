@@ -1,0 +1,30 @@
+{
+  "name": "java-engineering",
+  "version": "1.0.0",
+  "description": "Principal Java Engineer skill providing enterprise-grade Java 21+, Spring Boot 3+, Spring Modulith, DDD, resilient, observable, and secure backend implementations.",
+  "author": "Lead AI Engineering Architect",
+  "tags": [
+    "java-engineering",
+    "java-21",
+    "spring-boot-3",
+    "spring-modulith",
+    "virtual-threads",
+    "clean-architecture",
+    "ddd",
+    "kafka",
+    "production-engineering"
+  ],
+  "dependencies": {
+    "inherited_skills": [
+      "skill-architect",
+      "production-engineering",
+      "requirement-analysis",
+      "system-architecture"
+    ],
+    "python_packages": [],
+    "scripts": [
+      "scripts/java_code_linter.py"
+    ]
+  },
+  "quality_score_target": 85
+}

@@ -1,0 +1,45 @@
+package http
+
+import (
+	"encoding/json"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
+)
+
+type {{RESOURCE_NAME}}Service interface {
+	GetByID(ctx context.Context, id uuid.UUID) (*domain.{{RESOURCE_NAME}}, error)
+}
+
+type {{RESOURCE_NAME}}Handler struct {
+	service {{RESOURCE_NAME}}Service
+}
+
+func New{{RESOURCE_NAME}}Handler(service {{RESOURCE_NAME}}Service) *{{RESOURCE_NAME}}Handler {
+	return &{{RESOURCE_NAME}}Handler{service: service}
+}
+
+func (h *{{RESOURCE_NAME}}Handler) RegisterRoutes(r chi.Router) {
+	r.Route("/api/v1/{{RESOURCE_PATH}}", func(r chi.Router) {
+		r.Get("/{id}", h.GetByID)
+	})
+}
+
+func (h *{{RESOURCE_NAME}}Handler) GetByID(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "id")
+	id, err := uuid.Parse(idStr)
+	if err != nil {
+		http.Error(w, "invalid UUID", http.StatusBadRequest)
+		return
+	}
+
+	item, err := h.service.GetByID(r.Context(), id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(item)
+}

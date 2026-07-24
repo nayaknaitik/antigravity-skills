@@ -1,0 +1,29 @@
+{
+  "name": "go-engineering",
+  "version": "1.0.0",
+  "description": "Principal Go Engineer skill providing cloud-native, high-performance, resilient, observable, and idiomatic Go backend services and distributed systems.",
+  "author": "Lead AI Engineering Architect",
+  "tags": [
+    "go-engineering",
+    "golang",
+    "concurrency",
+    "cloud-native",
+    "grpc",
+    "slog",
+    "hexagonal-architecture",
+    "production-engineering"
+  ],
+  "dependencies": {
+    "inherited_skills": [
+      "skill-architect",
+      "production-engineering",
+      "requirement-analysis",
+      "system-architecture"
+    ],
+    "python_packages": [],
+    "scripts": [
+      "scripts/go_code_linter.py"
+    ]
+  },
+  "quality_score_target": 85
+}

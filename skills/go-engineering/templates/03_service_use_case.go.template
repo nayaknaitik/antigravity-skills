@@ -1,0 +1,29 @@
+package service
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/google/uuid"
+)
+
+type {{RESOURCE_NAME}}Repository interface {
+	Save(ctx context.Context, item *domain.{{RESOURCE_NAME}}) error
+	FindByID(ctx context.Context, id uuid.UUID) (*domain.{{RESOURCE_NAME}}, error)
+}
+
+type {{RESOURCE_NAME}}Service struct {
+	repo {{RESOURCE_NAME}}Repository
+}
+
+func New{{RESOURCE_NAME}}Service(repo {{RESOURCE_NAME}}Repository) *{{RESOURCE_NAME}}Service {
+	return &{{RESOURCE_NAME}}Service{repo: repo}
+}
+
+func (s *{{RESOURCE_NAME}}Service) GetByID(ctx context.Context, id uuid.UUID) (*domain.{{RESOURCE_NAME}}, error) {
+	item, err := s.repo.FindByID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find {{RESOURCE_NAME}} by id %s: %w", id, err)
+	}
+	return item, nil
+}

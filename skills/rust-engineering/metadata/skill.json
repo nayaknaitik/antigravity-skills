@@ -1,0 +1,29 @@
+{
+  "name": "rust-engineering",
+  "version": "1.0.0",
+  "description": "Production-grade AI skill for building ultra-fast, reliable backend systems using Rust, Tokio async runtime, Axum, Tower, SQLx, Serde, lock-free concurrency, and OpenTelemetry.",
+  "author": "Lead Rust Systems Architect",
+  "tags": [
+    "rust-engineering",
+    "tokio",
+    "axum",
+    "tower",
+    "sqlx",
+    "serde",
+    "lock-free",
+    "async-rust",
+    "thiserror",
+    "tracing",
+    "opentelemetry"
+  ],
+  "dependencies": {
+    "mcp_servers": [],
+    "python_packages": [
+      "pytest"
+    ],
+    "scripts": [
+      "scripts/rust_code_validator.py"
+    ]
+  },
+  "quality_score_target": 95
+}

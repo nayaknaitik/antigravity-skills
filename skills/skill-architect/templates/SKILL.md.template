@@ -1,0 +1,84 @@
+---
+name: {{ SKILL_NAME }}
+description: {{ SKILL_DESCRIPTION }}
+version: {{ SKILL_VERSION | default("1.0.0") }}
+author: {{ AUTHOR | default("AI Engineering Architect") }}
+tags: [{{ SKILL_TAGS | join(", ") }}]
+---
+
+# {{ SKILL_TITLE }} Skill Specification
+
+## 1. Executive Purpose
+{{ SKILL_PURPOSE }}
+
+## 2. Activation Rules & Trigger Patterns
+### 2.1 Positive Trigger Patterns
+- Activate when: {{ POSITIVE_TRIGGERS }}
+
+### 2.2 Negative Activation Constraints
+- DO NOT activate when: {{ NEGATIVE_TRIGGERS }}
+
+### 2.3 Context & Disambiguation Rules
+- {{ DISAMBIGUATION_RULES }}
+
+## 3. Inputs & Context Schemas
+| Parameter | Type | Required | Description | Validation Rule |
+| :--- | :--- | :---: | :--- | :--- |
+{% for input in INPUTS %}
+| `{{ input.name }}` | {{ input.type }} | {{ input.required }} | {{ input.description }} | {{ input.validation }} |
+{% endfor %}
+
+## 4. Outputs & Side Effects
+| Output Item | Format / Path | Description | Guarantees |
+| :--- | :--- | :--- | :--- |
+{% for output in OUTPUTS %}
+| {{ output.item }} | {{ output.format }} | {{ output.description }} | {{ output.guarantees }} |
+{% endfor %}
+
+## 5. End-to-End Workflow State Machine
+```mermaid
+stateDiagram-v2
+    [*] --> INIT
+    INIT --> RESEARCH
+    RESEARCH --> PLAN
+    PLAN --> EXECUTE
+    EXECUTE --> VERIFY
+    VERIFY --> HANDOFF
+    VERIFY --> FAILURE: Validation Failed
+    FAILURE --> RECOVERY
+    RECOVERY --> EXECUTE: Retry
+    HANDOFF --> [*]
+```
+
+1. **Phase 1: Initialization (`INIT`)**: Parse input specifications and validate environment.
+2. **Phase 2: Research (`RESEARCH`)**: Inspect `references/` and existing codebase assets.
+3. **Phase 3: Planning (`PLAN`)**: Formulate execution steps and decision logic.
+4. **Phase 4: Execution (`EXECUTE`)**: Mutate files, build assets, or run generators.
+5. **Phase 5: Verification (`VERIFY`)**: Execute test suites and quality gates.
+6. **Phase 6: Handoff (`HANDOFF`)**: Present summary artifact and hand off to user/downstream agent.
+
+## 6. Reasoning Strategy & Cognitive Process
+- **Defensive Execution**: Always read and verify target files prior to mutation.
+- **Explicit Hypothesis**: State intent before running destructive filesystem edits.
+- **Traceability**: Maintain audit trail in generated markdown artifacts.
+
+## 7. Quality Gates & Automated Validation
+- **Pre-Execution Check**: Verify all required input paths and credentials exist.
+- **Post-Execution Check**: Run `python3 scripts/skill_validator.py` and `scripts/quality_scorer.py`. Target score: **85+**.
+
+## 8. Deliverables & Handoff Protocols
+- Structured markdown artifact saved to conversation brain directory.
+- Clickable file links for all created/edited files (`file:///path/to/file`).
+
+## 9. Failure Conditions & Recovery Runbooks
+| Failure Mode | Root Cause | Recovery Procedure |
+| :--- | :--- | :--- |
+| Missing Input | Path unresolvable | Request path clarification from user |
+| Test Failure | Syntax error | Inspect traceback and re-run execution phase |
+
+## 10. Pre-Commit Review Checklist
+- [ ] YAML frontmatter valid and typed
+- [ ] 9 mandatory subdirectories present
+- [ ] Tests and examples included
+- [ ] User and Maintainer guides completed
+- [ ] Quality score >= 85

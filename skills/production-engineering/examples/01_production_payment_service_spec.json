@@ -1,0 +1,76 @@
+{
+  "service": {
+    "name": "payment-service",
+    "domain_context": "BillingContext",
+    "version": "1.4.0",
+    "tier": "tier-1"
+  },
+  "architecture": {
+    "pattern": "clean-architecture-hexagonal",
+    "domain_driven_design": {
+      "bounded_context": "BillingContext",
+      "aggregate_roots": ["PaymentAggregate"],
+      "value_objects": ["Money", "Currency", "PaymentMethod"],
+      "ubiquitous_language_doc": "docs/UBIQUITOUS_LANGUAGE.md"
+    },
+    "event_driven": {
+      "outbox_pattern_enabled": true,
+      "event_broker": "kafka",
+      "dead_letter_queue_enabled": true,
+      "events_emitted": ["PaymentProcessed", "PaymentFailed"]
+    }
+  },
+  "resilience": {
+    "timeouts": {
+      "http_read_ms": 3000,
+      "http_write_ms": 5000,
+      "db_query_ms": 1000,
+      "grpc_call_ms": 2000
+    },
+    "retries": {
+      "max_attempts": 3,
+      "backoff_base_ms": 100,
+      "backoff_cap_ms": 2000,
+      "jitter": "full"
+    },
+    "circuit_breaker": {
+      "failure_rate_threshold_percentage": 50,
+      "sliding_window_size": 100,
+      "sleep_duration_in_open_state_ms": 5000,
+      "half_open_trial_calls": 5
+    },
+    "graceful_shutdown": {
+      "termination_grace_period_seconds": 30,
+      "drain_period_seconds": 5
+    }
+  },
+  "observability": {
+    "opentelemetry": {
+      "enabled": true,
+      "otlp_endpoint": "http://otel-collector.observability.svc.cluster.local:4317",
+      "sampling_ratio": 0.1
+    },
+    "logging": {
+      "format": "json",
+      "level": "INFO",
+      "correlation_headers": ["traceparent", "x-request-id"]
+    },
+    "metrics": {
+      "format": "prometheus",
+      "port": 9090,
+      "path": "/metrics"
+    },
+    "health_checks": {
+      "startup_path": "/healthz/startup",
+      "liveness_path": "/healthz/liveness",
+      "readiness_path": "/healthz/readiness"
+    }
+  },
+  "security": {
+    "tls_enabled": true,
+    "mtls_service_mesh": true,
+    "secrets_provider": "vault",
+    "scan_pipeline_enabled": true,
+    "least_privilege_db_role": true
+  }
+}

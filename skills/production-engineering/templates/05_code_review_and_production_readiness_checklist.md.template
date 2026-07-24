@@ -1,0 +1,30 @@
+# Code Review & Production Readiness Review (PRR) Checklist
+
+## 1. Architectural & Code Quality Rules
+- [ ] Code follows Clean Architecture (Domain isolated from infrastructure).
+- [ ] SOLID principles satisfied; interfaces segregated and injected via DI.
+- [ ] Pull Request is under 400 lines of diff.
+- [ ] Code comments explain *why*, not obvious *what*.
+
+## 2. Resilience & Stability
+- [ ] All network and database calls have explicit timeouts.
+- [ ] Retries use exponential backoff with full jitter for transient errors.
+- [ ] Circuit breakers guard fragile downstream dependencies.
+- [ ] Application trap `SIGTERM` and handles graceful shutdown within deadline.
+- [ ] Liveness, Readiness, and Startup health checks configured.
+
+## 3. Observability & Operations
+- [ ] Logs are emitted as structured JSON with trace correlation (`trace_id`, `span_id`).
+- [ ] RED & USE metrics exposed on `/metrics`.
+- [ ] W3C `traceparent` context propagated on outbound RPC/HTTP.
+
+## 4. Security & Compliance
+- [ ] Zero secrets, API keys, or connection strings in source code.
+- [ ] Inputs validated against typed schemas.
+- [ ] Database queries executed via parameterized queries / ORM (no string concatenation SQL).
+- [ ] TLS 1.3 / mTLS enforced.
+
+## 5. Testing & Verification
+- [ ] Unit test coverage >= 70%.
+- [ ] Integration tests verify database migrations and infrastructure queries.
+- [ ] Automated build and test pipeline passes clean.

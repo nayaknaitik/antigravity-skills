@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AISkillManifest",
+  "type": "object",
+  "required": ["name", "version", "description", "author", "tags", "quality_score_target"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10
+    },
+    "author": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "quality_score_target": {
+      "type": "integer",
+      "minimum": 70,
+      "maximum": 100
+    },
+    "deprecated": {
+      "type": "boolean"
+    },
+    "replacement_version": {
+      "type": "string"
+    }
+  }
+}

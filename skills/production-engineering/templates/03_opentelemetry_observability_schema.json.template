@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenTelemetryObservabilityContract",
+  "description": "Standard OpenTelemetry log, metric, and trace attribute specifications",
+  "type": "object",
+  "properties": {
+    "required_log_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [
+        "timestamp",
+        "level",
+        "service",
+        "version",
+        "environment",
+        "trace_id",
+        "span_id",
+        "message"
+      ]
+    },
+    "standard_metric_names": {
+      "type": "object",
+      "properties": {
+        "http_requests_total": { "type": "string", "default": "http_requests_total" },
+        "http_request_duration_seconds": { "type": "string", "default": "http_request_duration_seconds" },
+        "db_query_duration_seconds": { "type": "string", "default": "db_query_duration_seconds" },
+        "active_connections_count": { "type": "string", "default": "active_connections_count" }
+      }
+    },
+    "tracing_context": {
+      "type": "object",
+      "properties": {
+        "header_propagation": { "type": "string", "default": "traceparent" },
+        "sample_rate": { "type": "number", "default": 0.1 }
+      }
+    }
+  },
+  "required": ["required_log_fields", "standard_metric_names", "tracing_context"]
+}

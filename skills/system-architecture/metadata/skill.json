@@ -1,0 +1,26 @@
+{
+  "name": "system-architecture",
+  "version": "1.0.0",
+  "description": "Production-grade AI skill for quantitative trading platform architecture, High-Level Design (HLD), Low-Level Design (LLD), AI Agent architectures, and trade-off analysis.",
+  "author": "AI Engineering Architect",
+  "tags": [
+    "system-architecture",
+    "hld",
+    "lld",
+    "quantitative-trading",
+    "ai-agent-architecture",
+    "rag-architecture",
+    "c4-model",
+    "adr"
+  ],
+  "dependencies": {
+    "mcp_servers": [],
+    "python_packages": [
+      "pytest"
+    ],
+    "scripts": [
+      "scripts/architecture_validator.py"
+    ]
+  },
+  "quality_score_target": 95
+}

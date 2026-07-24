@@ -1,0 +1,8 @@
+{
+  "dashboard": {
+    "code": "export default function Dashboard() {\n  return (\n    <div className=\"flex flex-col h-full space-y-6\">\n      {/* Top Stats */}\n      <div className=\"grid grid-cols-1 md:grid-cols-3 gap-6\">\n        <div className=\"card p-6\">Stat 1</div>\n        <div className=\"card p-6\">Stat 2</div>\n        <div className=\"card p-6\">Stat 3</div>\n      </div>\n      \n      {/* Main Chart Area */}\n      <div className=\"flex-1 card p-4\">\n        <div className=\"h-full w-full bg-slate-50 border border-slate-100 rounded flex items-center justify-center text-slate-400\">Chart Area</div>\n      </div>\n    </div>\n  );\n}"
+  },
+  "data_table": {
+    "code": "<div className=\"card overflow-hidden\">\n  <div className=\"overflow-x-auto\">\n    <table className=\"w-full text-sm text-left\">\n      <thead className=\"text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200\">\n        <tr>\n          <th className=\"px-6 py-3\">Symbol</th>\n          <th className=\"px-6 py-3 text-right\">Price</th>\n          <th className=\"px-6 py-3 text-right\">Change</th>\n        </tr>\n      </thead>\n      <tbody className=\"divide-y divide-slate-100 tabular-nums\">\n        <tr className=\"hover:bg-slate-50\">\n          <td className=\"px-6 py-4 font-medium text-slate-900\">AAPL</td>\n          <td className=\"px-6 py-4 text-right\">$150.00</td>\n          <td className=\"px-6 py-4 text-right text-success-600\">+1.2%</td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n</div>"
+  }
+}

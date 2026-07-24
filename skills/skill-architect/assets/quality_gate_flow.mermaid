@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    participant Developer as Skill Developer / AI Agent
+    participant Generator as skill_generator.py
+    participant Validator as skill_validator.py
+    participant Scorer as quality_scorer.py
+    participant CI as CI/CD Pipeline
+
+    Developer->>Generator: Generate initial skill folder
+    Generator-->>Developer: Scaffolds 9 directories & SKILL.md
+    Developer->>Validator: Validate structure & frontmatter
+    Validator-->>Developer: Returns valid=True / False
+    Developer->>Scorer: Evaluate 10 quality dimensions
+    Scorer-->>Developer: Returns score (0-100) & Grade
+    Developer->>CI: Push Pull Request
+    CI->>Scorer: Execute quality gate check (--min-score 85)
+    alt Score >= 85
+        CI-->>Developer: PASS - PR Approved for Merge
+    else Score < 85
+        CI-->>Developer: FAIL - PR Blocked, remediation required
+    end

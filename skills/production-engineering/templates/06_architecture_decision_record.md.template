@@ -1,0 +1,34 @@
+# ADR-{{NUMBER}}: {{TITLE}}
+
+- **Status**: Draft | Proposed | Accepted | Rejected | Superseded
+- **Deciders**: {{NAME_LIST}}
+- **Date**: {{YYYY-MM-DD}}
+
+## 1. Context & Problem Statement
+{{Describe the technical challenge or architectural decision context.}}
+
+## 2. Decision Drivers
+- {{Driver 1: Scalability requirement}}
+- {{Driver 2: Resilience requirement}}
+- {{Driver 3: Operational complexity}}
+
+## 3. Considered Options
+1. Option 1: {{Option 1 Name}}
+2. Option 2: {{Option 2 Name}}
+3. Option 3: {{Option 3 Name}}
+
+## 4. Decision Outcome
+Chosen Option: **{{Selected Option}}**, because {{Justification based on trade-offs}}.
+
+### Positive Consequences
+- {{Positive 1}}
+- {{Positive 2}}
+
+### Negative Consequences / Trade-offs
+- {{Trade-off 1}}
+- {{Trade-off 2}}
+
+## 5. Compliance & Production Engineering Alignment
+- [ ] Clean Architecture respected.
+- [ ] OpenTelemetry observability preserved.
+- [ ] Backward compatibility maintained.

@@ -1,0 +1,28 @@
+{
+  "name": "code-review",
+  "version": "1.0.0",
+  "description": "Principal Engineer code review engine for production pull requests, evaluating correctness, security, architecture, performance, concurrency, observability, financial safety, and production readiness.",
+  "author": "Lead AI Engineering Architect",
+  "tags": [
+    "code-review",
+    "principal-engineer",
+    "quality-gate",
+    "security-audit",
+    "concurrency-audit",
+    "financial-safety",
+    "production-engineering"
+  ],
+  "dependencies": {
+    "inherited_skills": [
+      "skill-architect",
+      "production-engineering",
+      "requirement-analysis",
+      "system-architecture"
+    ],
+    "python_packages": [],
+    "scripts": [
+      "scripts/code_review_engine.py"
+    ]
+  },
+  "quality_score_target": 85
+}

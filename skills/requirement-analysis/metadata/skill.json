@@ -1,0 +1,29 @@
+{
+  "name": "requirement-analysis",
+  "version": "1.0.0",
+  "description": "Transforms vague business ideas into measurable, testable, implementation-ready engineering requirements for institutional AI-first quantitative trading platforms.",
+  "author": "AI Engineering Architect",
+  "tags": [
+    "requirement-analysis",
+    "requirements-engineering",
+    "quantitative-trading",
+    "sdlc-step-1",
+    "bdd",
+    "gherkin"
+  ],
+  "quality_score_target": 85,
+  "dependencies": {
+    "mcp_servers": [],
+    "python_packages": [
+      "json",
+      "re",
+      "pathlib",
+      "unittest",
+      "argparse"
+    ],
+    "scripts": [
+      "scripts/ambiguity_checker.py",
+      "scripts/traceability_validator.py"
+    ]
+  }
+}

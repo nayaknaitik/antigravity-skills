@@ -1,0 +1,13 @@
+# Production Multi-Stage Dockerfile for Java 21 Spring Boot
+FROM eclipse-temurin:21-jdk-alpine AS builder
+WORKDIR /workspace
+COPY . .
+RUN ./gradlew bootJar --no-daemon
+
+FROM eclipse-temurin:21-jre-alpine AS runner
+WORKDIR /app
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+COPY --from=builder /workspace/build/libs/*.jar app.jar
+EXPOSE 8080 9090
+ENTRYPOINT ["java", "-XX:+UseG1GC", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

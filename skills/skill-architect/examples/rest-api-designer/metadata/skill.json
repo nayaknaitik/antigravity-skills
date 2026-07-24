@@ -1,0 +1,16 @@
+{
+  "name": "rest-api-designer",
+  "version": "1.0.0",
+  "description": "Production-grade REST API design and OpenAPI specification generator skill",
+  "author": "AI Engineering Architect",
+  "tags": [
+    "rest-api-designer",
+    "ai-engineering"
+  ],
+  "dependencies": {
+    "mcp_servers": [],
+    "python_packages": [],
+    "scripts": []
+  },
+  "quality_score_target": 85
+}

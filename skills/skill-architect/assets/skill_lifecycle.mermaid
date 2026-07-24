@@ -1,0 +1,11 @@
+graph TD
+    A[Research] --> B[Planning]
+    B --> C[Design]
+    C --> D[Generation]
+    D --> E[Automated Review & Quality Scoring]
+    E -->|Score < 85| F[Improvement Loop]
+    F --> D
+    E -->|Score >= 85| G[Automated Testing]
+    G --> H[Security & PR Review]
+    H --> I[Production Release & Versioning]
+    I --> J[Maintenance & SemVer Deprecation]

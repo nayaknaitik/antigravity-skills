@@ -1,0 +1,30 @@
+package postgres
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+
+	"github.com/google/uuid"
+)
+
+type {{RESOURCE_NAME}}Repository struct {
+	db *sql.DB
+}
+
+func New{{RESOURCE_NAME}}Repository(db *sql.DB) *{{RESOURCE_NAME}}Repository {
+	return &{{RESOURCE_NAME}}Repository{db: db}
+}
+
+func (r *{{RESOURCE_NAME}}Repository) FindByID(ctx context.Context, id uuid.UUID) (*domain.{{RESOURCE_NAME}}, error) {
+	query := `SELECT id, name, created_at FROM {{TABLE_NAME}} WHERE id = $1`
+	var item domain.{{RESOURCE_NAME}}
+	err := r.db.QueryRowContext(ctx, query, id).Scan(&item.ID, &item.Name, &item.CreatedAt)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, domain.ErrNotFound
+		}
+		return nil, fmt.Errorf("query {{TABLE_NAME}} failed: %w", err)
+	}
+	return &item, nil
+}

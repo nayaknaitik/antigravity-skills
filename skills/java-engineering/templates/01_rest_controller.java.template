@@ -1,0 +1,38 @@
+package {{PACKAGE_NAME}}.infrastructure.adapter.in.web;
+
+import {{PACKAGE_NAME}}.domain.port.inbound.{{USE_CASE_NAME}}UseCase;
+import {{PACKAGE_NAME}}.infrastructure.adapter.in.web.dto.{{RESOURCE_NAME}}Request;
+import {{PACKAGE_NAME}}.infrastructure.adapter.in.web.dto.{{RESOURCE_NAME}}Response;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/v1/{{RESOURCE_PATH}}")
+@Tag(name = "{{RESOURCE_NAME}} API", description = "Endpoints for {{RESOURCE_NAME}} management")
+public class {{RESOURCE_NAME}}Controller {
+
+    private final {{USE_CASE_NAME}}UseCase useCase;
+
+    public {{RESOURCE_NAME}}Controller({{USE_CASE_NAME}}UseCase useCase) {
+        this.useCase = useCase;
+    }
+
+    @PostMapping
+    @Operation(summary = "Create a new {{RESOURCE_NAME}}")
+    public ResponseEntity<{{RESOURCE_NAME}}Response> create(@Valid @RequestBody {{RESOURCE_NAME}}Request request) {
+        {{RESOURCE_NAME}}Response response = useCase.execute(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get {{RESOURCE_NAME}} by ID")
+    public ResponseEntity<{{RESOURCE_NAME}}Response> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(useCase.getById(id));
+    }
+}

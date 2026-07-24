@@ -1,0 +1,8 @@
+# Production Readiness Review (PRR) Checklist Template
+
+- [ ] **Architecture**: Inward dependency rule respected; clean isolation of domain logic.
+- [ ] **Resilience**: Timeouts, exponential backoff retries with full jitter, circuit breakers configured.
+- [ ] **Observability**: Structured JSON logs with `trace_id` and `span_id`; RED/USE metrics exposed.
+- [ ] **Security**: Zero secrets hardcoded; input validation; TLS 1.3 / mTLS; least privilege DB roles.
+- [ ] **Data Safety**: Financial calculations use decimal/integer precision; database migrations versioned via Flyway/Liquibase.
+- [ ] **Testing**: Unit test coverage >= 70%; Testcontainers integration tests passing cleanly.

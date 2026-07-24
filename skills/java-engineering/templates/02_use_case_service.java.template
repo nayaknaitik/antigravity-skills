@@ -1,0 +1,37 @@
+package {{PACKAGE_NAME}}.application.service;
+
+import {{PACKAGE_NAME}}.domain.model.{{RESOURCE_NAME}};
+import {{PACKAGE_NAME}}.domain.port.inbound.{{USE_CASE_NAME}}UseCase;
+import {{PACKAGE_NAME}}.domain.port.outbound.{{RESOURCE_NAME}}RepositoryPort;
+import {{PACKAGE_NAME}}.infrastructure.adapter.in.web.dto.{{RESOURCE_NAME}}Request;
+import {{PACKAGE_NAME}}.infrastructure.adapter.in.web.dto.{{RESOURCE_NAME}}Response;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@Transactional
+public class {{RESOURCE_NAME}}Service implements {{USE_CASE_NAME}}UseCase {
+
+    private final {{RESOURCE_NAME}}RepositoryPort repositoryPort;
+
+    public {{RESOURCE_NAME}}Service({{RESOURCE_NAME}}RepositoryPort repositoryPort) {
+        this.repositoryPort = repositoryPort;
+    }
+
+    @Override
+    public {{RESOURCE_NAME}}Response execute({{RESOURCE_NAME}}Request request) {
+        {{RESOURCE_NAME}} domainModel = {{RESOURCE_NAME}}.create(request);
+        {{RESOURCE_NAME}} saved = repositoryPort.save(domainModel);
+        return {{RESOURCE_NAME}}Response.from(saved);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public {{RESOURCE_NAME}}Response getById(UUID id) {
+        return repositoryPort.findById(id)
+            .map({{RESOURCE_NAME}}Response::from)
+            .orElseThrow(() -> new IllegalArgumentException("Resource not found: " + id));
+    }
+}
