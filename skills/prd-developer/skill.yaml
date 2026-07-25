@@ -1,0 +1,68 @@
+name: "PRD Developer"
+description: "Enterprise-grade Product Requirement Document (PRD) AI engineering skill. Converts vague ideas into production-ready PRDs through structured workflows, lazy-loaded context, and rigorous quality gates."
+entry_point: "SKILL.md"
+
+capabilities:
+  - "Idea Discovery & Clarification"
+  - "Goal & Success Metrics Definition"
+  - "User Persona & Journey Mapping"
+  - "Functional & Non-Functional Requirements"
+  - "Business Rules, Constraints, Edge Cases"
+  - "Architecture & API Requirements"
+  - "PRD Generation & Quality Validation"
+
+workflow:
+  - "Idea -> Discovery -> Clarification -> Stakeholders -> Problem Definition -> Goals -> Success Metrics -> User Personas -> User Journey -> Pain Points -> Feature Brainstorming -> Prioritization -> MVP -> Functional Requirements -> Non Functional Requirements -> Business Rules -> Constraints -> Edge Cases -> Acceptance Criteria -> Information Architecture -> Data Requirements -> API Requirements -> Analytics -> Security -> Risks -> Assumptions -> Roadmap -> Review -> Final PRD"
+
+routing_rules:
+  - rule: "When generating overall PRD workflow"
+    action: "Load docs/workflow.md"
+  - rule: "When establishing product thinking principles"
+    action: "Load docs/principles.md"
+  - rule: "When discovering requirements or clarifying ideas"
+    action: "Load docs/requirement-analysis.md"
+  - rule: "When requested to generate user personas or journeys"
+    action: "Load docs/user-personas.md"
+  - rule: "When defining functional requirements and acceptance criteria"
+    action: "Load docs/functional-requirements.md"
+  - rule: "When defining non-functional requirements (NFRs), security, or performance"
+    action: "Load docs/non-functional-requirements.md"
+  - rule: "When setting goals, success metrics, or KPIs"
+    action: "Load docs/metrics-and-goals.md"
+  - rule: "When identifying constraints, edge cases, or business rules"
+    action: "Load docs/business-rules-and-edge-cases.md"
+  - rule: "When reviewing PRD completeness or doing quality checks"
+    action: "Load docs/quality-gates.md"
+  - rule: "When outputting final PRD"
+    action: "Load templates/prd-template.md"
+
+file_loading_rules:
+  - "ONLY load the specific markdown file matching the current workflow state or explicit user request."
+  - "DO NOT load all files at once to minimize token consumption."
+
+dependencies:
+  - "None (Modular, self-contained files)"
+
+context_strategy:
+  - "Lazy Loading: Read only what is required for the current reasoning step."
+  - "Context Isolation: Avoid polluting context with unrelated requirements (e.g., don't load API requirements if only discussing user personas)."
+
+memory_strategy:
+  - "Reasoning Checkpoints: Explicitly state conclusions, decisions, and assumptions at the end of each step."
+  - "State minimal necessary context forward to the next step."
+
+output_strategy:
+  - "Strict adherence to modular output. Answer only what is asked using the appropriate file."
+  - "When outputting full PRD, use templates/prd-template.md."
+
+validation_strategy:
+  - "Use docs/quality-gates.md before concluding a major workflow step."
+
+quality_gates:
+  - "Verify no missing stakeholder."
+  - "Verify no missing user journey."
+  - "Verify no contradictory requirements."
+  - "Verify no duplicated requirements."
+  - "Verify every feature has testable acceptance criteria."
+  - "Verify every goal has success metrics."
+  - "Verify every ambiguity is highlighted and separated into Open Questions."

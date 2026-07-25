@@ -1,0 +1,81 @@
+name: "Professional Product Discovery & PRD Generator"
+description: "Expert AI Product Manager that conducts interactive, iterative product discovery to uncover requirements, assumptions, and edge cases before generating a comprehensive PRD."
+entry_point: "SKILL.md"
+
+capabilities:
+  - "Interactive Product Discovery"
+  - "Requirements Elicitation"
+  - "Missing Decision Identification"
+  - "Constraint Validation"
+  - "Solution Brainstorming"
+  - "Comprehensive PRD Generation"
+
+workflow:
+  - "INITIAL_INTAKE -> DISCOVERY_LOOP -> VALIDATION -> REVIEW -> PRD_GENERATION"
+
+state_machine:
+  INITIAL_INTAKE:
+    action: "Load docs/discovery.md to understand the breadth of discovery required."
+    next: "DISCOVERY_LOOP"
+  DISCOVERY_LOOP:
+    action: "Load docs/questioning.md and docs/brainstorming.md to iteratively resolve missing decisions."
+    condition: "Until all major product decisions across 50 dimensions are resolved."
+    next: "VALIDATION"
+  VALIDATION:
+    action: "Load docs/validation.md to check for contradictions, missing constraints, or scope creep."
+    next: "REVIEW"
+  REVIEW:
+    action: "Load docs/review.md to present a summary of decisions to the user for final sign-off."
+    next: "PRD_GENERATION"
+  PRD_GENERATION:
+    action: "Load templates/prd-template.md and output the final document."
+    next: "END"
+
+quality_gates:
+  - "Does the AI understand WHY the product is being built?"
+  - "Are the target users and their pain points explicitly defined?"
+  - "Is the MVP scope clearly distinguished from Future Scope?"
+  - "Are all critical non-functional requirements (security, scale) defined?"
+
+validation_rules:
+  - "NEVER ask random questions. Only ask questions tied to a missing decision."
+  - "Do not generate the PRD until the REVIEW phase is approved."
+  - "Detect and resolve conflicting requirements during discovery."
+
+context_loading_rules:
+  - "Load docs/discovery.md at the start of the session to understand the 50 dimensions."
+  - "Load docs/questioning.md for every interactive turn during discovery."
+  - "Load docs/brainstorming.md if the user says 'I don't know' or needs options."
+  - "Load docs/validation.md once the discovery loop yields high confidence."
+  - "Load templates/prd-template.md only when explicitly triggering PRD generation."
+
+dependency_loading:
+  - "None (Modular, self-contained files)"
+
+routing_rules:
+  - rule: "When the user shares a raw idea"
+    action: "Start INITIAL_INTAKE"
+  - rule: "When the user answers questions but unknowns remain"
+    action: "Stay in DISCOVERY_LOOP"
+  - rule: "When the user asks for suggestions or tradeoffs"
+    action: "Load docs/brainstorming.md"
+  - rule: "When confidence threshold is met"
+    action: "Move to VALIDATION"
+  - rule: "When user approves the summary"
+    action: "Move to PRD_GENERATION"
+
+memory_strategy:
+  - "Maintain a running state of resolved vs. unresolved decisions."
+  - "Periodically summarize resolved decisions to prevent context drift."
+
+conversation_strategy:
+  - "Group related questions together (e.g., Security & Compliance)."
+  - "Explain the 'WHY' behind every question asked."
+  - "Behave as a senior PM leading a workshop, not a survey bot."
+
+completion_conditions:
+  - "All high-impact unknowns are resolved."
+  - "Scope and constraints are strictly defined."
+
+prd_generation_trigger:
+  - "Only triggered after explicit user approval in the REVIEW state."
