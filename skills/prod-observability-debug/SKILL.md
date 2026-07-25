@@ -15,6 +15,10 @@ This skill enables the agent to continuously monitor system health (Mode A) and 
 - **Budgets & Rate Limits**: Maximum of 3 automated remediation attempts per hour per service. Maximum 10 query iterations per investigation phase. Exceeding limits forces immediate escalation.
 - **Kill Switch**: If `[ABORT_AUTONOMY]` is passed in the prompt or monitoring config, the skill drops to Read-Only reporting mode instantly.
 - **Audit Trail**: Every check, baseline comparison, hypothesis formed, and action taken MUST be documented in the final report.
+- **Evidence Integrity (Non-Negotiable)**: Every factual claim in any report must trace to something actually present in the ingested alert, logs, or metrics.
+  - If a value (severity, owner, SLA, dependency status, etc.) was not explicitly provided in the input, the skill MUST NOT state that it was "explicitly defined," "specified," or "confirmed via" the source.
+  - Where a value is inferred rather than sourced, state plainly: `"[field] not provided in input — inferred as [X] based on [reasoning]."`
+  - Fabricating a source for an inferred value is treated as a **critical failure** of this skill, equivalent in severity to an unauthorized remediation action, and must be self-reported as such if discovered after the fact.
 
 ## 2. Mode A: Continuous Monitoring Loop
 
@@ -27,6 +31,18 @@ When invoked as a continuous monitor, execute this state machine:
    - *INFO* -> Log only.
    - *WARNING* -> Flag in summary report.
    - *CRITICAL* -> Fire alert and **Hard Transition to Mode B**.
+
+### 2.5 Severity Mapping (Deviation Tier → Incident Priority)
+
+CRITICAL/WARNING/INFO describe metric deviation, not business-facing incident priority (P1–P4). These are not the same axis and must not be conflated.
+
+- If the ingested alert payload explicitly carries a P1–P4 (or equivalent) priority field, use it verbatim and cite the exact field/value in the report.
+- If no such field is present, derive one — do not leave it unstated and do not assume a source that isn't there:
+  - CRITICAL tier + user-facing revenue/critical path + no viable fallback or load-balanced degradation → **P1**
+  - CRITICAL tier + partial degradation (traffic still substantially succeeding, load-balanced, isolated service) → **P2**
+  - WARNING tier, any path → **P3**
+  - INFO tier → **P4**
+- In every report, state explicitly whether the priority was **(a) sourced** from the payload (quote the field) or **(b) derived** here (show the reasoning). Never present a derived value as if it were sourced — this is covered by the Evidence Integrity guardrail in Section 1.
 
 ## 3. Mode B: Reactive Debug & Remediation
 
@@ -55,6 +71,8 @@ If the leading hypothesis points to a fix, evaluate it here. **Default to Escala
 | Prod | Reversible | High | Low/Isolated | Yes | **AUTO-FIX** |
 | Non-Prod | Reversible | Medium/High | Any | Yes | **AUTO-FIX** |
 
+When a decision is made, the report must show the match against **all five columns explicitly** (Environment, Reversibility, Confidence, Blast Radius, Allowlist status) — not merely assert that a row was matched.
+
 ## 5. Closed-Loop Verification
 
 A remediation is NEVER "fire and forget".
@@ -71,6 +89,14 @@ A remediation is NEVER "fire and forget".
 
 4. **Failure Protocol**: If verification fails or the incident recurs within the window, the skill MUST escalate to a human. Silent re-attempts with unapproved fixes are forbidden.
 
+### 5.1 Independent Signal Requirement
+
+The independent check must be something other than the original alerting metric — e.g. a synthetic transaction, a separate health endpoint probe, or a canary request. Restating the same metric that triggered the alert does not satisfy this requirement.
+
+- If an independent-check tool/mechanism is available in this environment, run it and report its result explicitly.
+- If no independent-check mechanism is available, verification is **INCOMPLETE**, not passed. The report must state: `"Independent signal unavailable — verification based on primary metric only. Recommend manual confirmation."`
+- Under this condition, do not mark the incident status as `RESOLVED`. Mark it `RESOLVED (metric-only, unconfirmed)` and surface it for human confirmation.
+
 ## 6. Report Template
 
 Upon closing an investigation, fill and output this template. **Every section below is mandatory — do not omit a section because it's empty; state "None found" explicitly instead.** This report is the audit trail a human will trust in place of redoing the investigation themselves, so incompleteness here is a safety gap, not a style issue.
@@ -79,11 +105,12 @@ Upon closing an investigation, fill and output this template. **Every section be
 ## Observability & Debug Incident Report
 
 **Summary**: [1-sentence description of the issue and final state]
+**Severity**: [P1-P4] — [Source: quoted field from payload, OR "not provided in input — derived per Section 2.5, see reasoning below"]
 **Timeline**: 
 - [Use the actual current/event timestamp, e.g. 2026-07-24T10:02:00Z — never a placeholder like "[Current Time]"]
 - [HH:MM] Alert triggered / Investigation started
 - [HH:MM] Hypothesis confirmed
-- [HH:MM] Action taken / Escalated
+- [HH:MM] Action taken / Escalated  [label must match the actual decision made — do not leave template wording unedited]
 
 ### Check Results
 List every check category actually run against `references/check_thresholds.md`, not only the one(s) that fired. Checks that came back clean or couldn't be run are still required rows.
@@ -100,6 +127,16 @@ List every check category actually run against `references/check_thresholds.md`,
    - *Evidence*: [Link to logs/traces/deploy PR]
 2. **[Hypothesis 2]**...
 
+### Severity Justification
+- [Why P1/P2/P3/P4 was chosen if not explicitly defined upstream]
+
+### Decision Gate Evaluation
+- Environment: [Prod/Non-Prod]
+- Action Reversibility: [Reversible/Irreversible]
+- Confidence Level: [High/Med/Low]
+- Blast Radius: [High/Low]
+- Allowlist Match: [Yes/No]
+
 ### Budget & Rate Limit Check
 - Automated remediation attempts for this service in the last hour: [N/3]
 - Query iterations used this investigation: [N/10]
@@ -109,7 +146,8 @@ List every check category actually run against `references/check_thresholds.md`,
 - **Decision**: [Escalated to human | Auto-Fix executed]
 - **Details**: [Describe the rollback, restart, or escalation target. If escalation was skipped because the action is allowlisted, say "Escalation not required — matches pre-approved allowlist entry [issue-type/action pair]," never "bypassed."]
 - **Rollback Plan**: [If action was taken, how to revert it]
-- **Monitoring Window**: [Duration per the Section 5 table, and current status: in-progress / passed / recurred]
+- **Monitoring Window**: [Duration per the Section 5 table, based on the Severity stated above — and current status: in-progress / passed / recurred]
+- **Independent Signal Check**: [Required per Section 5.1. Name the specific check run and its result, OR state explicitly that no independent-check mechanism was available and that resolution is metric-only/unconfirmed.]
 
 ### If Escalated — Escalation Packet
 - **Suggested next step for the human**: [the top hypothesis's fix, even if the agent isn't allowed to execute it itself — never leave the human with nothing to start on]
